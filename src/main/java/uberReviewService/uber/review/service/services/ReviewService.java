@@ -20,8 +20,8 @@ public class ReviewService implements CommandLineRunner {
                 .content("Awesome ride")
                 .rating(4.9)
                 .build();
-        System.out.println(r);
         reviewRepository.save(r);
+        System.out.println(r.getId());
         List<Review>reviews = reviewRepository.findAll();
         for (Review review:reviews){
             System.out.println(review.getContent());

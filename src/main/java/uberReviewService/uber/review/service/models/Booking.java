@@ -23,4 +23,10 @@ public class Booking extends BaseModel {
     private Date startDate;
     @Temporal(value = TemporalType.TIMESTAMP )
     private Date endDate;
+
+    @ManyToOne
+    Driver driver;
+
+    @ManyToOne
+    Passenger passenger;
 }

@@ -9,11 +9,12 @@ import uberReviewService.uber.review.service.repositories.ReviewRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReviewService implements CommandLineRunner {
-   private final ReviewRepository reviewRepository;
-   private final BookingRepository  bookingRepository;
+    ReviewRepository reviewRepository;
+    BookingRepository  bookingRepository;
     public ReviewService(ReviewRepository reviewRepository, BookingRepository bookingRepository){
         this.reviewRepository = reviewRepository;
         this.bookingRepository = bookingRepository;
@@ -22,19 +23,24 @@ public class ReviewService implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("************************************");
         Review r = Review.builder()
-                .content("Awesome ride")
+                .content("Amazing ride")
                 .rating(4.9)
                 .build();
         Booking b = Booking.builder()
-                    .endDate(new Date()).build();
-
-        reviewRepository.save(r);
+                .review(r)
+                .endDate(new Date())
+                .build();
         bookingRepository.save(b);
         System.out.println(r.getId());
         List<Review>reviews = reviewRepository.findAll();
         for (Review review:reviews){
             System.out.println(review.getContent());
         }
-        reviewRepository.deleteById(2L);
+        Optional<Booking> b = bookingRepository.findById(1L);
+        if(b.isPresent()){
+            bookingRepository.delete(b.get());
+        }
+
+//        reviewRepository.deleteById(2L);
     }
 }
